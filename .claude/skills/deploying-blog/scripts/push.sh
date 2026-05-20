@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+REPO_ROOT=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)
+cd "${REPO_ROOT}"
+
 REGISTRY="us-central1-docker.pkg.dev/bens-project-462804/blog/blog"
 
 if ! git diff --quiet || ! git diff --cached --quiet; then

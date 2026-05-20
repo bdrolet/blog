@@ -6,19 +6,22 @@ compatibility: Requires docker, git, kubectl, and gcloud auth configured for us-
 
 # Deploying the Blog
 
-Run `scripts/push.sh` from the repo root. It handles the full deploy end-to-end:
+Read each agent file from `agents/` before spawning.
 
-1. Abort if there are uncommitted changes (working tree must be clean)
-2. Compute the short git SHA
-3. Build the Docker image tagged as both `<SHA>` and `latest`
-3. Push both tags to the registry
-4. Push both tags to the registry
-5. Run `kubectl set image` on the `blog` deployment in the `apps` namespace
-6. Wait for the rollout to complete with `kubectl rollout status`
+## Step 1 — Build and push (sequential)
 
-```bash
-bash scripts/push.sh
-```
+Spawn **build-and-push** (`agents/build-and-push.md`). Pass:
+- `skill_path`: absolute path to this skill directory (the directory containing this SKILL.md)
+
+If the agent reports dirty working tree, stop and tell the user which files need to be committed. Do not proceed to step 2.
+
+If the agent reports failure for any other reason, surface the error and stop.
+
+## Step 2 — Monitor rollout (sequential)
+
+Spawn **monitor-rollout** (`agents/monitor-rollout.md`). Pass the `sha` and `image` from step 1's output.
+
+Report the monitoring summary back to the user. If status is `degraded` or `failed`, include the rollback command.
 
 ## Registry
 
