@@ -1,2 +1,2 @@
-export const SITE_TITLE = 'Bens Blog';
- export const SITE_DESCRIPTION = 'Writing about building an ai infrastruture using PHI.';
+export const SITE_TITLE = "Ben's Blog";
+export const SITE_DESCRIPTION = 'Writing about infrastructure, systems programming, and the occasional dispatch on consulting and how I actually work.';
