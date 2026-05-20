@@ -1,0 +1,27 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<p>&copy; {year} · Built with <a href="https://astro.build">Astro</a></p>
+</footer>
+
+<style>
+	footer {
+		max-width: var(--max-width);
+		margin: 0 auto;
+		padding: 2rem 1.25rem 3rem;
+		color: var(--text-muted);
+		font-size: 0.875rem;
+		border-top: 1px solid var(--border);
+	}
+	footer p {
+		margin: 0;
+	}
+	footer a {
+		color: var(--text-muted);
+	}
+	footer a:hover {
+		color: var(--accent);
+	}
+</style>

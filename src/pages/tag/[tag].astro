@@ -1,0 +1,113 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import FormattedDate from '../../components/FormattedDate.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	const tags = [...new Set(posts.flatMap((p) => p.data.tags ?? []))];
+	return tags.map((tag) => ({
+		params: { tag },
+		props: {
+			tag,
+			posts: posts
+				.filter((p) => (p.data.tags ?? []).includes(tag))
+				.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()),
+		},
+	}));
+}
+
+const { tag, posts } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`#${tag} · ${SITE_TITLE}`} description={`Posts tagged ${tag}`} />
+		<style>
+			.back {
+				display: inline-block;
+				color: var(--text-muted);
+				font-size: 0.875rem;
+				margin-bottom: 1.5rem;
+			}
+			.back:hover {
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.count {
+				color: var(--text-muted);
+				font-size: 0.9rem;
+				margin-top: 0.25rem;
+			}
+			.post-list {
+				list-style: none;
+				padding: 0;
+				margin: 2rem 0 0;
+			}
+			.post-list li {
+				padding: 1rem 0;
+				border-bottom: 1px solid var(--border);
+			}
+			.post-list li:last-child {
+				border-bottom: none;
+			}
+			.post-row {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 1rem;
+			}
+			.post-title {
+				font-weight: 600;
+				color: var(--text);
+			}
+			.post-date {
+				color: var(--text-muted);
+				font-size: 0.85rem;
+				white-space: nowrap;
+				font-family: var(--font-mono);
+			}
+			a {
+				text-decoration: none;
+			}
+			a:hover .post-title {
+				color: var(--accent);
+			}
+			.post-desc {
+				margin: 0.25rem 0 0;
+				color: var(--text-muted);
+				font-size: 0.9rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<a href="/blog" class="back">← All posts</a>
+			<h1>#{tag}</h1>
+			<p class="count">{posts.length} {posts.length === 1 ? 'post' : 'posts'}</p>
+			<ul class="post-list">
+				{
+					posts.map((post) => (
+						<li>
+							<a href={`/${post.id}/`}>
+								<div class="post-row">
+									<span class="post-title">{post.data.title}</span>
+									<span class="post-date">
+										<FormattedDate date={post.data.pubDate} />
+									</span>
+								</div>
+							</a>
+							<p class="post-desc">{post.data.description}</p>
+						</li>
+					))
+				}
+			</ul>
+		</main>
+		<Footer />
+	</body>
+</html>
