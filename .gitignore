@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Blog backlog — drafts kept local-only (repo is public)
+pipeline/
