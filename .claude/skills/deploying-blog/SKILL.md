@@ -42,13 +42,18 @@ Anything committed to `main` goes live. Drafts must stay uncommitted or out of
 ## Step 2 — Watch the build
 
 ```bash
-bash .claude/skills/deploying-blog/scripts/deploy-status.sh
+bash .claude/skills/deploying-blog/scripts/deploy-status.sh          # HEAD
+bash .claude/skills/deploying-blog/scripts/deploy-status.sh <sha>    # a specific commit
 ```
 
-It polls the latest deployment until it reaches a terminal stage and prints the
-stage, the status and the deployment URL. A successful run ends at
-`deploy/success`; anything else is a failure and the script prints the failing
-stage.
+It waits for the deployment built **from that commit** and polls it to a
+terminal stage. Matching on the commit matters: Cloudflare takes a few seconds
+to queue a build after a push, so "the most recent deployment" immediately after
+`git push` is still the previous one, and a check that trusts it reports success
+for the wrong build.
+
+Exit codes: `0` on `deploy/success`, `1` on a failed build or a commit that
+never produced one, `2` when there are no credentials to check with.
 
 Without a Cloudflare token it falls back to reporting that it cannot read build
 status — in that case skip to step 3, which needs no credentials, or read the
