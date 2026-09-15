@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 export default defineConfig({
-	site: 'https://example.com',
+	site: 'https://blog.drolet.cloud',
 	output: 'static',
 	integrations: [mdx(), sitemap()],
 	markdown: {
