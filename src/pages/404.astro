@@ -1,0 +1,47 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={`Not found — ${SITE_TITLE}`} description="That page doesn't exist." />
+		<style>
+			.notfound h1 {
+				font-family: var(--font-mono);
+				margin-bottom: 0.5rem;
+			}
+			.notfound p {
+				color: var(--text-muted);
+			}
+			.links {
+				margin-top: 2rem;
+				font-size: 0.9rem;
+			}
+			.links a {
+				color: var(--accent);
+				text-decoration: none;
+			}
+			.links a + a {
+				margin-left: 1.25rem;
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="notfound">
+				<h1>404</h1>
+				<p>That page doesn't exist. It may have been renamed, or never existed at all.</p>
+				<p class="links">
+					<a href="/">Home</a>
+					<a href="/blog">All posts</a>
+				</p>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
