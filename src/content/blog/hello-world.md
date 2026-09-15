@@ -21,12 +21,12 @@ Posts will be technical and opinionated. I'll write about:
 
 ## The Stack
 
-This blog is built with [Astro](https://astro.build), deployed to GKE via a Docker image served by nginx. Source is in Git. Posts are Markdown. That's it.
+This blog is built with [Astro](https://astro.build) and hosted on Cloudflare Pages. Source is in Git. Posts are Markdown. Pushing to `main` builds and publishes. That's it.
 
 ```bash
-docker build -t blog .
-docker push us-central1-docker.pkg.dev/my-project/blog/blog:latest
-kubectl rollout restart deployment/blog
+git push origin main
 ```
+
+It did start out more elaborate — a Docker image serving the static build through nginx, running as a pod in a Kubernetes cluster behind a load balancer. That worked fine, and cost about eighteen dollars a month in load balancer alone to serve a few hundred kilobytes of HTML that never changes between deploys. The container was doing nothing the CDN wasn't already better at.
 
 Simple is good.
